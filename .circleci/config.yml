@@ -1,0 +1,46 @@
+version: 2.1
+machine: true
+
+jobs:
+  build-and-test:
+    machine:
+      image: ubuntu-2004:202107-02
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - run:
+          name: Install OpenJDK 17
+          command: |
+            sudo apt-get update && sudo apt-get install openjdk-17-jdk
+            sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+            sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+      - run:
+          name: Generate cumulative pom.xml checksum
+          command: |
+            find . -type f -name "pom.xml" -exec sh -c "sha256sum {} >> ~/pom-checksum.tmp" \;
+            sort -o ~/pom-checksum ~/pom-checksum.tmp
+      - restore_cache:
+          keys:
+            - df-java-template-multi-module-mvn-{{ checksum "~/pom-checksum" }}
+      - run:
+          name: Build
+          command: ./mvnw install -T 12 -DskipTests -DskipITs
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: df-java-template-multi-module-mvn-{{ checksum "~/pom-checksum" }}
+      - save_cache:
+          key: build-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - bootstrap/target/
+      - run:
+          name: Unit Tests
+          command: ./mvnw test -T 12
+      - run:
+          name: Integration Tests
+          command: ./mvnw integration-test -T 12
+
+workflows:
+  build-test-deploy:
+    jobs:
+      - build-and-test
