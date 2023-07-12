@@ -1,0 +1,54 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0-SNAPSHOT
+  title: Dorian Frances Java Template API
+servers:
+  - url: http://localhost:9999
+    description: Local
+
+paths:
+  /users/{id}:
+    get:
+      tags:
+        - User
+      summary: Get a user
+      operationId: getUser
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successfully retrieved user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserDTO'
+
+components:
+  schemas:
+    GetUserDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        error:
+          $ref: '#/components/schemas/DfErrorDTO'
+      required:
+        - id
+        - username
+    DfErrorDTO:
+      type: object
+      properties:
+        statusCode:
+          type: string
+        errorMessage:
+          type: string
+        timestamp:
+          type: string

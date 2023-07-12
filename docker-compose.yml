@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  df-java-template:
+    image: "postgres:13"
+    container_name: "df-java-template-container"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=P@ssw0rd
+      - POSTGRES_DB=df-java-template
+    ports:
+      - "5432:5432"
