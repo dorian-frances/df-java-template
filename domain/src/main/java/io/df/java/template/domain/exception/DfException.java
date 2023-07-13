@@ -9,7 +9,11 @@ public class DfException extends Exception {
     String dfExceptionCode;
     String errorMessage;
 
-    public static boolean isExceptionFunctional(DfException dfException) {
-        return dfException.getDfExceptionCode().startsWith("F.");
+    public static boolean isExceptionNotFound(DfException dfException) {
+        return dfException.getDfExceptionCode().startsWith("NF");
+    }
+
+    public static boolean isExceptionBadRequest(DfException dfException) {
+        return dfException.getDfExceptionCode().startsWith("BD.");
     }
 }

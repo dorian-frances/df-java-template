@@ -12,7 +12,7 @@ import java.util.UUID;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Builder
-@Table(name = "user", schema = "user_storage")
+@Table(name = "user", schema = "exposition_storage")
 @EntityListeners(AuditingEntityListener.class)
 public class UserEntity {
     @Id

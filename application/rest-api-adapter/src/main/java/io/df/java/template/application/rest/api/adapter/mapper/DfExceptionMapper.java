@@ -12,17 +12,19 @@ public interface DfExceptionMapper {
 
     static DfErrorDTO errorToContract(DfException dfException) {
         final DfErrorDTO dfErrorDTO = new DfErrorDTO();
-        dfErrorDTO.setStatusCode(dfException.getDfExceptionCode().toString());
+        dfErrorDTO.setStatusCode(dfException.getDfExceptionCode());
         dfErrorDTO.setErrorMessage(dfException.getErrorMessage());
         dfErrorDTO.setTimestamp(new Date().toString());
         return dfErrorDTO;
     }
 
     static <T> ResponseEntity<T> mapDfExceptionToContract(final Supplier<T> tSupplier, DfException dfException) {
-        if (DfException.isExceptionFunctional(dfException)) {
-            return ResponseEntity.badRequest().body(tSupplier.get());
+        if (DfException.isExceptionNotFound(dfException)) {
+            return ResponseEntity.status(404).body(tSupplier.get());
+        } else if (DfException.isExceptionBadRequest(dfException)) {
+            return ResponseEntity.status(400).body(tSupplier.get());
         } else {
-            return ResponseEntity.internalServerError().body(tSupplier.get());
+            return ResponseEntity.status(500).body(tSupplier.get());
         }
     }
 }

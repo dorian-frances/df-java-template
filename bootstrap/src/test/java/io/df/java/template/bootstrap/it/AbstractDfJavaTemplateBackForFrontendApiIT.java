@@ -84,7 +84,7 @@ public abstract class AbstractDfJavaTemplateBackForFrontendApiIT {
                 .build(pathParams);
     }
 
-    protected static final String REST_API_USERS = "/users/{id}";
+    protected static final String REST_API_USERS = "/api/v1/users/{id}";
 
     static protected final Faker faker = new Faker();
 

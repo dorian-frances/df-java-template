@@ -3,11 +3,11 @@ info:
   version: 1.0.0-SNAPSHOT
   title: Dorian Frances Java Template API
 servers:
-  - url: http://localhost:9999
+  - url: http://localhost:8080
     description: Local
 
 paths:
-  /users/{id}:
+  /api/v1/users/{id}:
     get:
       tags:
         - User
