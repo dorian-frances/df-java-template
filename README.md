@@ -157,8 +157,8 @@ For now, only one table (users) is present as an example in the project.
 ```mermaid
 classDiagram
 class user
-Users : uuid id
-Users : character varying username
+user : uuid id
+user : character varying username
 ```
 
 ## :rocket: Infrastructure
