@@ -29,10 +29,6 @@ jobs:
           paths:
             - ~/.m2
           key: df-java-template-multi-module-mvn-{{ checksum "~/pom-checksum" }}
-      - save_cache:
-          key: build-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - bootstrap/target/
       - run:
           name: Unit Tests
           command: ./mvnw test -T 12
